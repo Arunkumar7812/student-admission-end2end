@@ -23,7 +23,7 @@ def load_model():
     """Loads the pickled model from the file system."""
     try:
         # NOTE: Updated file name from 'model.pkl' to the one you provided
-        with open('random_forest_regressor_pipeline.pkl', 'rb') as file:
+        with open('best_model.pkl', 'rb') as file:
             model = pickle.load(file)
         return model
     except FileNotFoundError:
