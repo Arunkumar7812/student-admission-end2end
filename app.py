@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 
-# Configuration: Adjust based on your model's expected features and ranges
+# Configuration now correctly lists ONLY the 7 predictive features
 FEATURES = {
     'GRE Score': (300, 340, 316),
     'TOEFL Score': (92, 120, 107),
@@ -39,12 +39,10 @@ if model:
     # --- Collect User Inputs ---
     st.header("Student Metrics")
 
-    # Use Streamlit's sidebar for cleaner input
     with st.form("admission_form"):
+        # User input collection for the 7 features
         gre_score = st.slider("GRE Score", min_value=FEATURES['GRE Score'][0], max_value=FEATURES['GRE Score'][1], value=FEATURES['GRE Score'][2])
         toefl_score = st.slider("TOEFL Score", min_value=FEATURES['TOEFL Score'][0], max_value=FEATURES['TOEFL Score'][1], value=FEATURES['TOEFL Score'][2])
-        
-        # Convert to float since these are usually floats in the dataset
         university_rating = st.slider("University Rating (1-5)", min_value=FEATURES['University Rating'][0], max_value=FEATURES['University Rating'][1], value=FEATURES['University Rating'][2])
         sop = st.slider("SOP Score (1.0-5.0)", min_value=FEATURES['SOP'][0], max_value=FEATURES['SOP'][1], value=FEATURES['SOP'][2], step=0.5)
         lor = st.slider("LOR Score (1.0-5.0)", min_value=FEATURES['LOR'][0], max_value=FEATURES['LOR'][1], value=FEATURES['LOR'][2], step=0.5)
@@ -55,32 +53,23 @@ if model:
 
     if submitted:
         # --- Prepare Data for Prediction ---
+        # ONLY the 7 actual predictive features are included here
         input_data = [
             gre_score, toefl_score, university_rating, sop, lor, cgpa, research
         ]
 
-        # Create DataFrame in the exact order the model expects
+        # Create DataFrame in the exact order (7 columns)
         final_features = pd.DataFrame([input_data], columns=FEATURE_ORDER)
 
         # --- Make Prediction ---
         try:
             prediction = model.predict(final_features)
-            
-            # The output is a probability (0.0 to 1.0)
-            chance_of_admit = round(prediction[0], 4)
-            chance_percentage = round(chance_of_admit * 100, 2)
+            chance_of_admit = round(prediction[0] * 100, 2)
 
-            # --- Display Results ---
             st.subheader("Prediction Result")
-            
-            if chance_of_admit >= 0.7:
-                st.success(f"High Chance of Admission: **{chance_percentage}%**")
-            elif chance_of_admit >= 0.5:
-                st.info(f"Moderate Chance of Admission: **{chance_percentage}%**")
-            else:
-                st.warning(f"Lower Chance of Admission: **{chance_percentage}%**")
-            
+            st.success(f"Chance of Admission: **{chance_of_admit}%**")
             st.balloons()
 
         except Exception as e:
+            # If the error still occurs here, it means the new model.pkl wasn't loaded correctly.
             st.error(f"An error occurred during prediction: {e}")
