@@ -20,7 +20,7 @@ FEATURE_ORDER = list(FEATURES.keys())
 def load_model():
     """Loads the pickled model from the file system."""
     try:
-        with open('model.pkl', 'rb') as file:
+        with open('random_forest_regressor_pipeline.pkl', 'rb') as file:
             model = pickle.load(file)
         return model
     except FileNotFoundError:
