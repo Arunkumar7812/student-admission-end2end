@@ -1,40 +1,57 @@
-import streamlit as st
 import numpy as np
+import pandas as pd
 import pickle
+from flask import Flask, request, jsonify, render_template
 
-# Load the model
-MODEL_PATH = "student_admission_model.pkl"
+# 1. Initialize the Flask application
+app = Flask(__name__)
 
+# 2. Load the trained model
+# IMPORTANT: Ensure your model file is named 'model.pkl' and is in the same directory.
 try:
-    with open(MODEL_PATH, "rb") as file:
+    with open('model.pkl', 'rb') as file:
         model = pickle.load(file)
+    print("Model loaded successfully.")
 except FileNotFoundError:
-    st.error("Model file not found. Upload 'student_admission_model.pkl' to the app directory.")
-    st.stop()
+    print("Error: 'model.pkl' not found. Ensure the trained model is saved and present.")
+    model = None # Set model to None to prevent crashing
 
-st.title("🎓 Student Admission Chance Prediction")
-st.write("Enter the student details to predict the probability of getting admission.")
+# 3. Define the home page route
+@app.route('/')
+def home():
+    # Renders the HTML template where the user enters the data
+    return render_template('index.html')
 
-gre = st.number_input("GRE Score (260 - 340)", min_value=0.0, step=1.0)
-toefl = st.number_input("TOEFL Score (0 - 120)", min_value=0.0, step=1.0)
-uni_rating = st.slider("University Rating (1 - 5)", 1, 5, 3)
-sop = st.slider("SOP Strength (1 - 5)", 1, 5, 3)
-lor = st.slider("LOR Strength (1 - 5)", 1, 5, 3)
-cgpa = st.number_input("CGPA (0 - 10)", min_value=0.0, max_value=10.0, step=0.1)
-research = st.radio("Research Experience", ("No", "Yes"))
+# 4. Define the prediction route
+@app.route('/predict', methods=['POST'])
+def predict():
+    if model is None:
+        return render_template('index.html', prediction_text="Error: The prediction model is not available.")
 
-research_value = 1 if research == "Yes" else 0
+    # Get data from POST request (form submission)
+    features = [
+        'GRE Score', 'TOEFL Score', 'University Rating', 'SOP', 
+        'LOR', 'CGPA', 'Research'
+    ]
+    
+    # Extract form values and convert to float/int
+    int_features = [float(x) for x in request.form.values()]
 
-input_data = np.array([[gre, toefl, uni_rating, sop, lor, cgpa, research_value]])
+    # Create a DataFrame in the correct feature order for the model
+    final_features = pd.DataFrame([int_features], columns=features)
+    
+    # Make prediction
+    prediction = model.predict(final_features)
+    
+    # Prediction result is the "Chance of Admit" (a probability between 0 and 1)
+    # Format the output as a percentage for better user display
+    chance_of_admit = round(prediction[0] * 100, 2)
+    
+    # Return the result to the HTML template
+    return render_template('index.html', 
+                           prediction_text=f'Chance of Admission: {chance_of_admit}%')
 
-if st.button("Predict Admission Chance"):
-    try:
-        prediction = model.predict(input_data)[0]
-        prediction = round(prediction * 100, 2)
-
-        st.success(f"✅ Probability of Admission: {prediction}%")
-    except Exception as e:
-        st.error("Error making prediction. Please check model compatibility.")
-        st.exception(e)
-
-st.markdown("Made with ❤️ using Machine Learning & Streamlit")
+# 5. Run the Flask app
+if __name__ == "__main__":
+    # You may need to change the port if it's already in use
+    app.run(debug=True)
