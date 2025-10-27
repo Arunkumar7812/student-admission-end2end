@@ -1,57 +1,86 @@
-import numpy as np
+import streamlit as st
 import pandas as pd
+import numpy as np
 import pickle
-from flask import Flask, request, jsonify, render_template
 
-# 1. Initialize the Flask application
-app = Flask(__name__)
+# Configuration: Adjust based on your model's expected features and ranges
+FEATURES = {
+    'GRE Score': (300, 340, 316),
+    'TOEFL Score': (92, 120, 107),
+    'University Rating': (1, 5, 3),
+    'SOP': (1.0, 5.0, 3.4),
+    'LOR': (1.0, 5.0, 3.5),
+    'CGPA': (6.8, 9.92, 8.6),
+    'Research': (0, 1, 0)
+}
+FEATURE_ORDER = list(FEATURES.keys())
 
-# 2. Load the trained model
-# IMPORTANT: Ensure your model file is named 'model.pkl' and is in the same directory.
-try:
-    with open('model.pkl', 'rb') as file:
-        model = pickle.load(file)
-    print("Model loaded successfully.")
-except FileNotFoundError:
-    print("Error: 'model.pkl' not found. Ensure the trained model is saved and present.")
-    model = None # Set model to None to prevent crashing
+# --- Function to Load Model ---
+@st.cache_resource
+def load_model():
+    """Loads the pickled model from the file system."""
+    try:
+        with open('model.pkl', 'rb') as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFoundError:
+        st.error("Error: 'model.pkl' not found. Please ensure it is in the same directory.")
+        return None
 
-# 3. Define the home page route
-@app.route('/')
-def home():
-    # Renders the HTML template where the user enters the data
-    return render_template('index.html')
+# --- Main Streamlit App ---
 
-# 4. Define the prediction route
-@app.route('/predict', methods=['POST'])
-def predict():
-    if model is None:
-        return render_template('index.html', prediction_text="Error: The prediction model is not available.")
+st.set_page_config(page_title="Admission Chance Predictor", layout="centered")
+st.title("🎓 Graduate Admission Chance Prediction")
+st.markdown("Enter the student's details below to predict their chance of admission.")
 
-    # Get data from POST request (form submission)
-    features = [
-        'GRE Score', 'TOEFL Score', 'University Rating', 'SOP', 
-        'LOR', 'CGPA', 'Research'
-    ]
-    
-    # Extract form values and convert to float/int
-    int_features = [float(x) for x in request.form.values()]
+model = load_model()
 
-    # Create a DataFrame in the correct feature order for the model
-    final_features = pd.DataFrame([int_features], columns=features)
-    
-    # Make prediction
-    prediction = model.predict(final_features)
-    
-    # Prediction result is the "Chance of Admit" (a probability between 0 and 1)
-    # Format the output as a percentage for better user display
-    chance_of_admit = round(prediction[0] * 100, 2)
-    
-    # Return the result to the HTML template
-    return render_template('index.html', 
-                           prediction_text=f'Chance of Admission: {chance_of_admit}%')
+if model:
+    # --- Collect User Inputs ---
+    st.header("Student Metrics")
 
-# 5. Run the Flask app
-if __name__ == "__main__":
-    # You may need to change the port if it's already in use
-    app.run(debug=True)
+    # Use Streamlit's sidebar for cleaner input
+    with st.form("admission_form"):
+        gre_score = st.slider("GRE Score", min_value=FEATURES['GRE Score'][0], max_value=FEATURES['GRE Score'][1], value=FEATURES['GRE Score'][2])
+        toefl_score = st.slider("TOEFL Score", min_value=FEATURES['TOEFL Score'][0], max_value=FEATURES['TOEFL Score'][1], value=FEATURES['TOEFL Score'][2])
+        
+        # Convert to float since these are usually floats in the dataset
+        university_rating = st.slider("University Rating (1-5)", min_value=FEATURES['University Rating'][0], max_value=FEATURES['University Rating'][1], value=FEATURES['University Rating'][2])
+        sop = st.slider("SOP Score (1.0-5.0)", min_value=FEATURES['SOP'][0], max_value=FEATURES['SOP'][1], value=FEATURES['SOP'][2], step=0.5)
+        lor = st.slider("LOR Score (1.0-5.0)", min_value=FEATURES['LOR'][0], max_value=FEATURES['LOR'][1], value=FEATURES['LOR'][2], step=0.5)
+        cgpa = st.slider("CGPA", min_value=FEATURES['CGPA'][0], max_value=FEATURES['CGPA'][1], value=FEATURES['CGPA'][2], step=0.01)
+        research = st.selectbox("Research Experience", options=[0, 1], format_func=lambda x: "Yes" if x == 1 else "No")
+        
+        submitted = st.form_submit_button("Predict Chance")
+
+    if submitted:
+        # --- Prepare Data for Prediction ---
+        input_data = [
+            gre_score, toefl_score, university_rating, sop, lor, cgpa, research
+        ]
+
+        # Create DataFrame in the exact order the model expects
+        final_features = pd.DataFrame([input_data], columns=FEATURE_ORDER)
+
+        # --- Make Prediction ---
+        try:
+            prediction = model.predict(final_features)
+            
+            # The output is a probability (0.0 to 1.0)
+            chance_of_admit = round(prediction[0], 4)
+            chance_percentage = round(chance_of_admit * 100, 2)
+
+            # --- Display Results ---
+            st.subheader("Prediction Result")
+            
+            if chance_of_admit >= 0.7:
+                st.success(f"High Chance of Admission: **{chance_percentage}%**")
+            elif chance_of_admit >= 0.5:
+                st.info(f"Moderate Chance of Admission: **{chance_percentage}%**")
+            else:
+                st.warning(f"Lower Chance of Admission: **{chance_percentage}%**")
+            
+            st.balloons()
+
+        except Exception as e:
+            st.error(f"An error occurred during prediction: {e}")
