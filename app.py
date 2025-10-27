@@ -4,8 +4,9 @@ import numpy as np
 import pickle
 
 
+# Configuration for features (including the necessary, non-predictive 'Serial No.' for the model)
 FEATURES = {
-    'Serial No.':(1,500,1),
+    'Serial No.':(1,500,1), # Must remain in the list as the model expects it
     'GRE Score': (300, 340, 316),
     'TOEFL Score': (92, 120, 107),
     'University Rating': (1, 5, 3),
@@ -14,18 +15,19 @@ FEATURES = {
     'CGPA': (6.8, 9.92, 8.6),
     'Research': (0, 1, 0)
 }
-FEATURE_ORDER = list(FEATURES.keys())
+FEATURE_ORDER = list(FEATURES.keys()) # Length is 8 (must match input_data length)
 
 # --- Function to Load Model ---
 @st.cache_resource
 def load_model():
     """Loads the pickled model from the file system."""
     try:
+        # NOTE: Updated file name from 'model.pkl' to the one you provided
         with open('random_forest_regressor_pipeline.pkl', 'rb') as file:
             model = pickle.load(file)
         return model
     except FileNotFoundError:
-        st.error("Error: 'model.pkl' not found. Please ensure it is in the same directory.")
+        st.error("Error: 'random_forest_regressor_pipeline.pkl' not found. Please ensure it is in the same directory.")
         return None
 
 # --- Main Streamlit App ---
@@ -41,7 +43,7 @@ if model:
     st.header("Student Metrics")
 
     with st.form("admission_form"):
-        # User input collection for the 7 features
+        # User input collection for the 7 actual features
         gre_score = st.slider("GRE Score", min_value=FEATURES['GRE Score'][0], max_value=FEATURES['GRE Score'][1], value=FEATURES['GRE Score'][2])
         toefl_score = st.slider("TOEFL Score", min_value=FEATURES['TOEFL Score'][0], max_value=FEATURES['TOEFL Score'][1], value=FEATURES['TOEFL Score'][2])
         university_rating = st.slider("University Rating (1-5)", min_value=FEATURES['University Rating'][0], max_value=FEATURES['University Rating'][1], value=FEATURES['University Rating'][2])
@@ -54,12 +56,24 @@ if model:
 
     if submitted:
         # --- Prepare Data for Prediction ---
-        # ONLY the 7 actual predictive features are included here
+        
+        # FIX: Define a placeholder for the required 'Serial No.' (it must come first)
+        serial_no_placeholder = 1 
+        
+        # Combine the 8 features: [Placeholder] + [7 User Inputs]
         input_data = [
-            gre_score, toefl_score, university_rating, sop, lor, cgpa, research
+            serial_no_placeholder, # <-- INSERTED HERE TO MATCH FEATURE_ORDER
+            gre_score, 
+            toefl_score, 
+            university_rating, 
+            sop, 
+            lor, 
+            cgpa, 
+            research
         ]
-
-        # Create DataFrame in the exact order (7 columns)
+        # input_data is now length 8
+        
+        # Create DataFrame: 8 data points for 8 columns (resolves the ValueError)
         final_features = pd.DataFrame([input_data], columns=FEATURE_ORDER)
 
         # --- Make Prediction ---
