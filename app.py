@@ -1,27 +1,40 @@
 import streamlit as st
-import pandas as pd
+import numpy as np
 import pickle
 
-# Load saved pickle model
-with open("student_admission_model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Load the model
+MODEL_PATH = "student_admission_model.pkl"
 
-st.title("Student Admission Prediction App")
-st.write("Enter details to predict admission chances")
+try:
+    with open(MODEL_PATH, "rb") as file:
+        model = pickle.load(file)
+except FileNotFoundError:
+    st.error("Model file not found. Upload 'student_admission_model.pkl' to the app directory.")
+    st.stop()
 
-numeric_cols = ['GRE Score', 'TOEFL Score', 'University Rating', 'SOP', 'LOR ', 'CGPA', 'Research']
+st.title("🎓 Student Admission Chance Prediction")
+st.write("Enter the student details to predict the probability of getting admission.")
 
-gre = st.number_input("GRE Score", min_value=260, max_value=340)
-toefl = st.number_input("TOEFL Score", min_value=0, max_value=120)
-uni = st.selectbox("University Rating", [1, 2, 3, 4, 5])
-sop = st.slider("SOP Strength", 1.0, 5.0, step=0.5)
-lor = st.slider("LOR Strength", 1.0, 5.0, step=0.5)
-cgpa = st.number_input("CGPA", min_value=0.0, max_value=10.0)
-research = st.selectbox("Research Experience", [0, 1])
+gre = st.number_input("GRE Score (260 - 340)", min_value=0.0, step=1.0)
+toefl = st.number_input("TOEFL Score (0 - 120)", min_value=0.0, step=1.0)
+uni_rating = st.slider("University Rating (1 - 5)", 1, 5, 3)
+sop = st.slider("SOP Strength (1 - 5)", 1, 5, 3)
+lor = st.slider("LOR Strength (1 - 5)", 1, 5, 3)
+cgpa = st.number_input("CGPA (0 - 10)", min_value=0.0, max_value=10.0, step=0.1)
+research = st.radio("Research Experience", ("No", "Yes"))
 
-input_df = pd.DataFrame([[gre, toefl, uni, sop, lor, cgpa, research]],
-                        columns=numeric_cols)
+research_value = 1 if research == "Yes" else 0
 
-if st.button("Predict"):
-    prediction = model.predict(input_df)[0]
-    st.success(f"Admission Chance: {prediction * 100:.2f}%")
+input_data = np.array([[gre, toefl, uni_rating, sop, lor, cgpa, research_value]])
+
+if st.button("Predict Admission Chance"):
+    try:
+        prediction = model.predict(input_data)[0]
+        prediction = round(prediction * 100, 2)
+
+        st.success(f"✅ Probability of Admission: {prediction}%")
+    except Exception as e:
+        st.error("Error making prediction. Please check model compatibility.")
+        st.exception(e)
+
+st.markdown("Made with ❤️ using Machine Learning & Streamlit")
