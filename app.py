@@ -5,6 +5,7 @@ import pickle
 
 
 FEATURES = {
+    'Serial No.':(1,500,1),
     'GRE Score': (300, 340, 316),
     'TOEFL Score': (92, 120, 107),
     'University Rating': (1, 5, 3),
