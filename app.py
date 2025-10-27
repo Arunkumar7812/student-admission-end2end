@@ -5,7 +5,8 @@ import mlflow.pyfunc
 st.title("Student Admission Prediction App")
 
 # Load model
-model = mlflow.pyfunc.load_model("models:/Student_Admission_Model/2")
+model = mlflow.pyfunc.load_model("models/best_model")
+
 
 # User inputs
 gre_score = st.number_input("GRE Score", 0, 340, 300)

@@ -1,5 +1,7 @@
-mlflow
-scikit-learn
-pandas
-streamlit
 numpy
+pandas
+scikit-learn
+mlflow
+streamlit
+matplotlib
+seaborn
