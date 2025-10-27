@@ -3,11 +3,6 @@ import pandas as pd
 import numpy as np
 import pickle
 
-# Configuration now correctly lists ONLY the 7 predictive features
-input_df["Serial No."] = 0
-input_df = input_df[
-    ["Serial No.", "GRE Score", "TOEFL Score", "University Rating", "SOP", "LOR ", "CGPA", "Research"]
-]
 
 FEATURES = {
     'GRE Score': (300, 340, 316),
