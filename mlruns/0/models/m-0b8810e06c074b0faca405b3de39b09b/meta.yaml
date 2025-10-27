@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-0b8810e06c074b0faca405b3de39b09b/artifacts
+creation_timestamp: 1761537096507
+experiment_id: '0'
+last_updated_timestamp: 1761537102733
+model_id: m-0b8810e06c074b0faca405b3de39b09b
+model_type: null
+name: Lasso Regression
+source_run_id: ab5ba3722c1a4df4ade9312446556116
+status: 2
+status_message: null

@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/c130a54c4fcd4d71a93f3a789fac9fbd/artifacts
+end_time: 1761537017815
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c130a54c4fcd4d71a93f3a789fac9fbd
+run_name: Model Comparison
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761537017766
+status: 4
+tags: []
+user_id: Arun kumar

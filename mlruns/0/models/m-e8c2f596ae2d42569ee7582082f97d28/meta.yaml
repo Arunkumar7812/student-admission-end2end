@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-e8c2f596ae2d42569ee7582082f97d28/artifacts
+creation_timestamp: 1761537750600
+experiment_id: '0'
+last_updated_timestamp: 1761537756691
+model_id: m-e8c2f596ae2d42569ee7582082f97d28
+model_type: null
+name: Decision Tree Regressor_model
+source_run_id: df6d99d3be8a4412a93a90ed94c2d6f7
+status: 2
+status_message: null

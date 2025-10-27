@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-19775608b4fa467184eea728054ae3af/artifacts
+creation_timestamp: 1761538085503
+experiment_id: '0'
+last_updated_timestamp: 1761538091975
+model_id: m-19775608b4fa467184eea728054ae3af
+model_type: null
+name: Ridge Regression_model
+source_run_id: af44c5e44ab243249f04fa40efcb4655
+status: 2
+status_message: null

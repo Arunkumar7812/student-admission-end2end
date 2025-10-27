@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-a94c63b909c14475b825a8d688653b4b/artifacts
+creation_timestamp: 1761537203799
+experiment_id: '0'
+last_updated_timestamp: 1761537210296
+model_id: m-a94c63b909c14475b825a8d688653b4b
+model_type: null
+name: Support Vector Regressor_model
+source_run_id: a0295eba94574b2e8c806a7300f49cb3
+status: 2
+status_message: null

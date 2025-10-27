@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/a0295eba94574b2e8c806a7300f49cb3/artifacts
+end_time: 1761537210311
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a0295eba94574b2e8c806a7300f49cb3
+run_name: Support Vector Regressor
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761537203690
+status: 3
+tags: []
+user_id: Arun kumar

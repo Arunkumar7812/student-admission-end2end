@@ -1,0 +1,22 @@
+artifact_path: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-8f4d9fe32df9479ca5529c7d84676ec7/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.18
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.5.1
+model_id: m-8f4d9fe32df9479ca5529c7d84676ec7
+model_size_bytes: 1352
+model_uuid: m-8f4d9fe32df9479ca5529c7d84676ec7
+prompts: null
+run_id: 313f10f7a4c1403788963cea01620581
+utc_time_created: '2025-10-27 03:58:54.757918'

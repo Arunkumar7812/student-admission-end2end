@@ -1,0 +1,15 @@
+creation_timestamp: 1761537569811
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1761537569811
+model_id: m-cf3e26253fa0456787ba56cf10723f9b
+name: Student_Admission_Model
+run_id: 313f10f7a4c1403788963cea01620581
+run_link: null
+source: models:/m-cf3e26253fa0456787ba56cf10723f9b
+status: READY
+status_message: null
+storage_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-cf3e26253fa0456787ba56cf10723f9b/artifacts
+user_id: null
+version: 1

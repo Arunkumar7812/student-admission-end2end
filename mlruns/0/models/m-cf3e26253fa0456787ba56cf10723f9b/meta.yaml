@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-cf3e26253fa0456787ba56cf10723f9b/artifacts
+creation_timestamp: 1761537554427
+experiment_id: '0'
+last_updated_timestamp: 1761537561141
+model_id: m-cf3e26253fa0456787ba56cf10723f9b
+model_type: null
+name: Gradient Boosting Regressor
+source_run_id: 313f10f7a4c1403788963cea01620581
+status: 2
+status_message: null

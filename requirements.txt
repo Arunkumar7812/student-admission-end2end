@@ -1,7 +1,5 @@
-numpy
-pandas
-matplotlib
+mlflow
 scikit-learn
-seaborn
-statsmodels
+pandas
 streamlit
+numpy

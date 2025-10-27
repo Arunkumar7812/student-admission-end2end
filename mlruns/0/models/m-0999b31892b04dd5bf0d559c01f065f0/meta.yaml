@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-0999b31892b04dd5bf0d559c01f065f0/artifacts
+creation_timestamp: 1761537078222
+experiment_id: '0'
+last_updated_timestamp: 1761537090530
+model_id: m-0999b31892b04dd5bf0d559c01f065f0
+model_type: null
+name: Linear Regression
+source_run_id: ab5ba3722c1a4df4ade9312446556116
+status: 2
+status_message: null

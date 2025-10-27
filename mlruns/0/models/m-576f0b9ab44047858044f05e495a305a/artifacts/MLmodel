@@ -1,0 +1,38 @@
+artifact_path: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-576f0b9ab44047858044f05e495a305a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.18
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+is_signature_from_type_hint: false
+mlflow_version: 3.5.1
+model_id: m-576f0b9ab44047858044f05e495a305a
+model_size_bytes: 132703
+model_uuid: m-576f0b9ab44047858044f05e495a305a
+prompts: null
+run_id: af44c5e44ab243249f04fa40efcb4655
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "Serial No.", "required": true}, {"type": "long",
+    "name": "GRE Score", "required": true}, {"type": "long", "name": "TOEFL Score",
+    "required": true}, {"type": "long", "name": "University Rating", "required": true},
+    {"type": "double", "name": "SOP", "required": true}, {"type": "double", "name":
+    "LOR", "required": true}, {"type": "double", "name": "CGPA", "required": true},
+    {"type": "long", "name": "Research", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-10-27 04:08:34.783868'

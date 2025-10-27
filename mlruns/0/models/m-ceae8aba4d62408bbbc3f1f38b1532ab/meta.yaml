@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Arun%20kumar/Downloads/student%20admission%20chance%20end%20to%20end/mlruns/0/models/m-ceae8aba4d62408bbbc3f1f38b1532ab/artifacts
+creation_timestamp: 1761538106785
+experiment_id: '0'
+last_updated_timestamp: 1761538113756
+model_id: m-ceae8aba4d62408bbbc3f1f38b1532ab
+model_type: null
+name: Random Forest Regressor_model
+source_run_id: af44c5e44ab243249f04fa40efcb4655
+status: 2
+status_message: null
